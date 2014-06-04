@@ -1,9 +1,22 @@
 For GoAgent
+===========
+```
 ========^==
-DON'T PANIC
+```
+## DON'T PANIC ##
 本工具为批量选择GCC IP 工具。
 
-跟说不愿分享的小人说不,同时对所有乐于分享的表示感谢。
+## Requirements ##
+* Python2.7.6 IDLE(recommend)
+* w3m (Ubuntu/Linux)
+
+## How to use ##
+Ubuntu with w3m, using IDLE F5 run.
+Other System, change re.compile first.
+Set yourself IP will better.
+
+## For Chinese ##
+其实我想说，GoAgent刚启动红黄是正常的，耐心一般都会有用的，可是在GFW下手动配置IP更佳。
 如今在Ubuntu环境下工作正常，如果有时间我会考虑移植到其它平台。
 
 移植时，主要修改re.compile的内容使其能正确匹配你系统的输出。
