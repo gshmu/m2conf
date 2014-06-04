@@ -61,6 +61,8 @@ class Ping(threading.Thread):
         try:
             lock.acquire()
             ip_list.append((loss_percent, avg_time, self.ip_address, host_name))
+            #test enable. 测试用，我还是喜欢屏蔽掉，下边会输出排序好的。
+            print '%-6s%-4s%-16s%s' % (loss_percent, avg_time, self.ip_address, host_name)
         except:
             pass
         finally:
@@ -73,6 +75,7 @@ def list_ping(_set):
             ping_thread = Ping('%s.%d' % (_[0], i))
             ping_thread.start()
 
+    # once run threading.activeCount()=2 !!!maybe itself
     print threading.activeCount()-2, 'threading working...'
     while threading.activeCount() > 2:
         pass
