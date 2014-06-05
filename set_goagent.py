@@ -24,6 +24,7 @@ re_find_dns_name = re.compile(r'dNSName=([^:]+)', re.M)
 from GCC import ip_set  # setting ip set first.
 
 ip_list = []
+init_threading_count = threading.activeCount()
 
 
 def find_host(ip):
@@ -76,8 +77,8 @@ def list_ping(_set):
             ping_thread.start()
 
     # once run threading.activeCount()=2 !!!maybe itself
-    print threading.activeCount()-2, 'threading working...'
-    while threading.activeCount() > 2:
+    print threading.activeCount() - init_threading_count, 'threading working...'
+    while threading.activeCount() > init_threading_count:
         pass
     
     ip_list.sort()
