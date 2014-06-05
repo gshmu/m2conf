@@ -72,7 +72,7 @@ class Ping(threading.Thread):
 
 def list_ping(_set):
     for _ in _set:
-        for i in range(_[1], _[2]):
+        for i in range(_[1], _[2] + 1):
             ping_thread = Ping('%s.%d' % (_[0], i))
             ping_thread.start()
 
