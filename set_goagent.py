@@ -22,6 +22,8 @@ re_find_dns_name = re.compile(r'dNSName=([^:]+)', re.M)
 #ip_set = [('0.0.0', min, max), ]
 #ip_set = [('203.208.46', 140, 145), ]
 from GCC import ip_set  # setting ip set first.
+#ip_str = "IP|IP" #Easy add yourself ip.
+ip_str = None
 
 ip_list = []
 init_threading_count = threading.activeCount()
@@ -55,7 +57,8 @@ class Ping(threading.Thread):
         avg_time = re_avg_time.search(ping_cmd_echo)
         avg_time = avg_time and int(avg_time.group(1)) or 0
 
-        host_name = find_host(self.ip_address)
+        # Don't check high loss ip's host.
+        host_name = find_host(self.ip_address) if loss_percent < 80 else None
 
         # wait mutex and add to list
         global lock
@@ -71,9 +74,15 @@ class Ping(threading.Thread):
 
 
 def list_ping(_set):
-    for _ in _set:
-        for i in range(_[1], _[2] + 1):
-            ping_thread = Ping('%s.%d' % (_[0], i))
+    if ip_str is None or ip_str == '':
+        for _ in _set:
+            for i in range(_[1], _[2] + 1):
+                ping_thread = Ping('%s.%d' % (_[0], i))
+                ping_thread.start()
+    else:
+        ip = ip_str.split("|")
+        for _ in ip:
+            ping_thread = Ping(_)
             ping_thread.start()
 
     # once run threading.activeCount()=2 !!!maybe itself
