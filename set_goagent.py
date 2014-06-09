@@ -17,7 +17,8 @@ please: $sudo apt-get install w3m
 """
 re_avg_time = re.compile(r'\d+/(\d+)', re.M)
 re_loss_percent = re.compile(r'(\d+)%', re.M)
-re_find_dns_name = re.compile(r'dNSName=([^:]+)', re.M)
+# Exact match host name. old:([^:]+)
+re_find_dns_name = re.compile(r'dNSName=[^:]*?\b(google\.\w+\.?\w*)', re.M)
 
 #ip_set = [('0.0.0', min, max), ]
 #ip_set = [('203.208.46', 140, 145), ]
@@ -60,17 +61,18 @@ class Ping(threading.Thread):
         # Don't check high loss ip's host.
         host_name = find_host(self.ip_address) if loss_percent < 80 else None
 
-        # wait mutex and add to list
-        global lock
-        try:
-            lock.acquire()
-            ip_list.append((loss_percent, avg_time, self.ip_address, host_name))
-            #test enable. 测试用，我还是喜欢屏蔽掉，下边会输出排序好的。
-            print '%-6s%-4s%-16s%s' % (loss_percent, avg_time, self.ip_address, host_name)
-        except:
-            pass
-        finally:
-            lock.release()
+        if host_name is not None:
+            # wait mutex and add to list
+            global lock
+            try:
+                lock.acquire()
+                ip_list.append((loss_percent, avg_time, self.ip_address, host_name))
+                #test enable. 测试用，我还是喜欢屏蔽掉，下边会输出排序好的。
+                print '%-6s%-4s%-16s%s' % (loss_percent, avg_time, self.ip_address, host_name)
+            except:
+                pass
+            finally:
+                lock.release()
 
 
 def list_ping(_set):
