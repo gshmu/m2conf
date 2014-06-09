@@ -98,6 +98,13 @@ def list_ping(_set):
     for ip in ip_list:
         print '%-6s%-4s%-16s%s' % ip
 
+    print "you may love this."
+    _ip = []
+    for _ in ip_list:
+        if int(_[0]) == 0:
+            _ip.append(_[2])
+    print "|".join(_ip)
+
 
 if __name__ == '__main__':
     global lock
